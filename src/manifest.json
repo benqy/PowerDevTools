@@ -1,0 +1,22 @@
+﻿{
+  "name": "PowerDev",
+  "description": "自动请求服务端的测试配置,运行性能测试并提交数据",
+  "version": "0.1.0",
+  "content_scripts": [
+    {
+	  "matches":["http://*/*","https://*/*"],
+      "js": ["js/content.js"]
+    }
+  ],
+  "permissions": [
+    "tabs","experimental", "http://*/*", "https://*/*"
+  ],
+  "devtools_page": "devtools.html",
+  "options_page": "panel.html",
+  "background": { "scripts": ["js/background.js"] },
+  "browser_action": {
+      "default_title": "增强Developer Tool",
+      "default_icon": "img/icon.png"
+  },
+  "manifest_version": 2
+}
