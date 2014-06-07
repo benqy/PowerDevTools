@@ -9,11 +9,11 @@
     }
   ],
   "permissions": [
-    "tabs","experimental", "http://*/*", "https://*/*"
+    "tabs", "http://*/*", "https://*/*"
   ],
   "devtools_page": "devtools.html",
-  "options_page": "panel.html",
   "background": { "scripts": ["js/background.js"] },
+  "options_page": "options.html",
   "browser_action": {
       "default_title": "增强Developer Tool",
       "default_icon": "img/icon.png"

@@ -1,11 +1,55 @@
 ﻿<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>PowerDevs</title>
+    <meta charset="UTF-8">
+    <title>PowerDev</title>
+    <style>
+        html, body {
+        }
+
+        .content {
+            margin: 20px 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        textarea {
+            width: 400px;
+        }
+    </style>
 </head>
 <body>
-    <div id="abc"></div>
+    <div class="content">
+        <h4>待测试网址(多个站点请换行)</h4>
+        <textarea name="" id="urls" cols="300" rows="10">
+http://www.baidu.com
+       </textarea>
+        <div>
+            <button id="startTesting">GO</button>
+        </div>
+    </div>
+    <div class="content">
+        <h4>结果</h4>
+        <table id="keys">
+            <thead>
+                <tr>
+                    <th>数据/网址</th>
+                    <th>1</th>                    
+                    <th>2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="d1">DomContentLoaded</td>
+                    <td id="d2"></td>
+                    <td id="d3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/panel.js"></script>
+    <script src="js/HarParser.js"></script>
 </body>
 </html>
