@@ -83,8 +83,24 @@
     report: function () {
       log(this.datas);
       log('Finished');
-      $('#d2').text(this.datas[0].timings.onContentLoad);
-      $('#d3').text(this.datas[1].timings.onContentLoad);
+      $('.repot-content').remove();
+      this.datas.forEach(function (data) {
+        var ul = '<ul class="report repot-content">';
+        ul += '<li>' + data.har.pages[0].title + '</li>';
+        ul += '<li>' + data.timings.onContentLoad + '</li>';
+        ul += '<li>' + data.timings.onLoad + '</li>';
+        ul += '<li>' + data.timings.blocked + '</li>';
+        ul += '<li>' + data.timings.dns + '</li>';
+        ul += '<li>' + data.timings.connect + '</li>';
+        ul += '<li>' + data.timings.send + '</li>';
+        ul += '<li>' + data.timings.wait + '</li>';
+        ul += '<li>' + data.timings.receive + '</li>';
+        ul += '<li>' + data.timings.ssl + '</li>';
+        ul += '<li>' + data.size.transfer + '</li>';
+        ul += '<li>' + data.size.content + '</li>';
+        ul += '</ul>';
+        $('#report').append(ul);
+      });
     }
   };
 

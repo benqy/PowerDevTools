@@ -3,19 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>PowerDev</title>
+
     <style>
         html, body {
+            padding: 0;
+            height: 0;
         }
 
         .content {
             margin: 20px 15px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #ccc;
         }
 
         textarea {
             width: 400px;
         }
+
+        .report {
+            padding: 0;
+            margin: 0 0 40px 0;
+            display: block;
+            float: left;
+            width: 210px;
+            border-right: 1px solid #0ff;
+        }
+
+            .report:last-child {
+                border-right: none;
+            }
+
+            .report li {
+                display: inline-block;
+                overflow:hidden;
+                text-align: center;
+                width: 200px;
+                padding: 5px;
+                height: 20px;
+            }
+
+                .report li:first-child {
+                    font-weight: bold;
+                }
+
+                .report li:last-child {
+                    border-bottom: none;
+                }
+
+            .report:last-child li {
+                border-right: none;
+            }
+
+            .report li:nth-child(2n) {
+                background: #e0e0e0;
+            }
     </style>
 </head>
 <body>
@@ -28,24 +68,22 @@ http://www.baidu.com
             <button id="startTesting">GO</button>
         </div>
     </div>
-    <div class="content">
-        <h4>结果</h4>
-        <table id="keys">
-            <thead>
-                <tr>
-                    <th>数据/网址</th>
-                    <th>1</th>                    
-                    <th>2</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id="d1">DomContentLoaded</td>
-                    <td id="d2"></td>
-                    <td id="d3"></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="content" id="report">
+        <h4>测试报告</h4>
+        <ul class="report">
+            <li>状态/网站</li>
+            <li>DomContentLoaded</li>
+            <li>Onload</li>
+            <li>Blocked</li>
+            <li>DNS</li>
+            <li>Connect</li>
+            <li>Send</li>
+            <li>Wait</li>
+            <li>Receive</li>
+            <li>SSL</li>
+            <li>传输大小</li>
+            <li>文件总大小</li>
+        </ul>
     </div>
 
     <script src="js/jquery-2.1.1.min.js"></script>
