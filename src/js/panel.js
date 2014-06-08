@@ -41,7 +41,6 @@
   var speedTesting = {
     datas:[],
     init: function () {
-      this.datas = [];
       this.urls = [];
       this.bindAction();
     },
@@ -49,6 +48,9 @@
       $('#startTesting').on('click', function () {
         speedTesting.start();
       });
+    },
+    reset: function () {
+      this.reset();
     },
     start: function () {
       clearPannel();
