@@ -1,4 +1,6 @@
 ﻿(function (global) {
+  //初始化时刷新页面,以加载content.js
+  chrome.devtools.inspectedWindow.reload();
 
   global.send = function (type, obj) {
     if (chrome && chrome.runtime) {
@@ -10,6 +12,23 @@
     send('log', obj);
   };
 
+  global.logToPanel = function (text) {
+    $('#log').append('<span>[' + new Date().toString()   + ']:' +text+'</span>');
+  };
+
+  global.clearPannel = function(){
+    $('#log').html('');
+  };
+  //毫秒转为秒显示,并保留3位小数
+  global.msToSec = function (time, fixed) {
+    fixed = fixed || 3;
+    return (time / 1000).toFixed(fixed);
+  };
+
+  global.byteToKB = function (size, fixed) {
+    fixed = fixed || 3;
+    return (size / 1024).toFixed(fixed);
+  };
 
   var loadingTimer = null, loadend = false,
     //数据传输总时间(即页面开始加载到最后一个请求完成的时间);
@@ -32,6 +51,8 @@
       });
     },
     start: function () {
+      clearPannel();
+      logToPanel('begin testing');
       log('Start');
       this.stop();
       chrome.devtools.network.onRequestFinished.addListener(this.onRequestFinished);
@@ -50,6 +71,7 @@
     next: function () {
       if (this.urls.length) {
         var url = this.urls.shift();
+        logToPanel('GOTO:' + url);
         send('start_speed_testing', { url: url, tabId: chrome.devtools.inspectedWindow.tabId });
       }
       else {
@@ -69,7 +91,7 @@
           chrome.devtools.network.getHAR(function (harObj) {
             var harParser = new HARParser(harObj);
             //计算实际总传输时间(即开始请求页面到最后一个请求结束)
-            harParser.timings.transferTime = transferTime;
+            harParser.timings.transferTime = msToSec(transferTime);
             me.datas.push(harParser);            
             me.next();
           });
@@ -82,25 +104,10 @@
     },
     report: function () {
       log(this.datas);
+      logToPanel('Finished,see the report below');
       log('Finished');
-      $('.repot-content').remove();
-      this.datas.forEach(function (data) {
-        var ul = '<ul class="report repot-content">';
-        ul += '<li>' + data.har.pages[0].title + '</li>';
-        ul += '<li>' + data.timings.onContentLoad + '</li>';
-        ul += '<li>' + data.timings.onLoad + '</li>';
-        ul += '<li>' + data.timings.blocked + '</li>';
-        ul += '<li>' + data.timings.dns + '</li>';
-        ul += '<li>' + data.timings.connect + '</li>';
-        ul += '<li>' + data.timings.send + '</li>';
-        ul += '<li>' + data.timings.wait + '</li>';
-        ul += '<li>' + data.timings.receive + '</li>';
-        ul += '<li>' + data.timings.ssl + '</li>';
-        ul += '<li>' + data.size.transfer + '</li>';
-        ul += '<li>' + data.size.content + '</li>';
-        ul += '</ul>';
-        $('#report').append(ul);
-      });
+      $('.report-content').remove();
+      new Reporter(this.datas).render();      
     }
   };
 

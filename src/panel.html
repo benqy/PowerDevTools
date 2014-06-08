@@ -17,8 +17,18 @@
 
         textarea {
             width: 400px;
+            float:left;
         }
 
+        #log{
+            float:left;
+            margin:0 15px;
+            padding:3px;
+            height:155px;
+        }
+        #log span{
+            display:block;
+        }
         .report {
             padding: 0;
             margin: 0 0 40px 0;
@@ -34,7 +44,7 @@
 
             .report li {
                 display: inline-block;
-                overflow:hidden;
+                overflow: hidden;
                 text-align: center;
                 width: 200px;
                 padding: 5px;
@@ -59,12 +69,15 @@
     </style>
 </head>
 <body>
-    <div class="content">
-        <h4>待测试网址(多个站点请换行)</h4>
-        <textarea name="" id="urls" cols="300" rows="10">
+    <div class="content" style="border-bottom: 1px solid #ddd;">
+        <h4>网站首屏速度(多个站点请换行)</h4>
+        <div>
+            <textarea name="" id="urls" cols="300" rows="10">
 http://www.baidu.com
        </textarea>
-        <div>
+            <div id="log"></div>
+        </div>
+        <div style="clear:left;">
             <button id="startTesting">GO</button>
         </div>
     </div>
@@ -72,22 +85,25 @@ http://www.baidu.com
         <h4>测试报告</h4>
         <ul class="report">
             <li>状态/网站</li>
-            <li>DomContentLoaded</li>
-            <li>Onload</li>
-            <li>Blocked</li>
-            <li>DNS</li>
-            <li>Connect</li>
-            <li>Send</li>
-            <li>Wait</li>
-            <li>Receive</li>
-            <li>SSL</li>
-            <li>传输大小</li>
-            <li>文件总大小</li>
+            <li>请求数</li>
+            <li>DomContentLoaded(秒)</li>
+            <li>Onload事件(秒)</li>
+            <li>Blocked(秒)</li>
+            <li>DNS(秒)</li>
+            <li>Connect(秒)</li>
+            <li>Send(秒)</li>
+            <li>Wait(秒)</li>
+            <li>Receive(秒)</li>
+            <li>SSL(秒)</li>
+            <li>加载总用时(秒)</li>
+            <li>传输大小(KB)</li>
+            <li>文件总大小(KB)</li>
         </ul>
     </div>
 
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/panel.js"></script>
     <script src="js/HarParser.js"></script>
+    <script src="js/Reporter.js"></script>
 </body>
 </html>
