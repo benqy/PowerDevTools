@@ -12,5 +12,11 @@ PowerDevTools
 4. 请求的数量
 
 ###截图
+
+####禁用缓存
 ![](img/1.png)
 ![](img/2.png)
+
+####带缓存
+![](img/3.png)
+![](img/4.png)
