@@ -16,7 +16,7 @@
     $('#log').append('<span>[' + new Date().toString()   + ']:' +text+'</span>');
   };
 
-  global.clearPannel = function(){
+  global.clearLog = function(){
     $('#log').html('');
   };
   //毫秒转为秒显示,并保留3位小数
@@ -50,10 +50,14 @@
       });
     },
     reset: function () {
-      this.reset();
+      this.datas = [];
+      this.urls = [];
+      $('.report-content').remove();
+      $('#chart-column').text('');
     },
     start: function () {
-      clearPannel();
+      clearLog();
+      this.reset();
       logToPanel('begin testing');
       log('Start');
       this.stop();
@@ -108,7 +112,6 @@
       log(this.datas);
       logToPanel('Finished,see the report below');
       log('Finished');
-      $('.report-content').remove();
       new Reporter(this.datas).render();      
     }
   };

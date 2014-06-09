@@ -1,4 +1,11 @@
-﻿(function (global) {
+﻿/*
+http://ent.qq.com
+http://www.mtime.com/
+http://www.17173.com
+http://www.duowan.com
+*/
+
+(function (global) {
   'use strict';
 
   global.Reporter = function (hars) {
@@ -11,44 +18,9 @@
       this.hars.forEach(function (data) {
         me.renderReport(data);
       });
-      this.renderPie();
+      this.renderColumn();
     },
     renderColumn: function () {
-      //var datas = [], chart;
-      //this.hars.forEach(function (data) {
-      //  datas.push({
-      //    type: 'column',
-      //    dataPoints: [
-      //      { label: 'contentLoad', y: data.timings.onContentLoad * 1000 },
-      //      { label: 'Onload', y: data.timings.onLoad * 1000 },
-      //      { label: '加载总用时', y: data.timings.transferTime * 1000 },
-      //      { label: 'Blocked', y: data.timings.blocked * 1000 },
-      //      { label: 'DNS', y: data.timings.dns * 1000 },
-      //      { label: 'Connect', y: data.timings.connect * 1000 },
-      //      { label: 'Send', y: data.timings.send * 1000 },
-      //      { label: 'Wait', y: data.timings.wait * 1000 },
-      //      { label: 'Receive', y: data.timings.receive * 1000 },
-      //      { label: 'SSL', y: data.timings.ssl * 1000 },
-      //    ]
-      //  });
-      //});
-
-
-      ////{ label: '请求数', y: data.requestCount*1000 },
-      ////      { label: '传输大小', y: data.size.transfer * 1000 },
-      ////      { label: '文件大小', y: data.size.content * 1000 },
-      //log(datas);
-
-      //chart =  new CanvasJS.Chart("chart-column", {
-      //  theme: "theme2",
-      //  title: {
-      //    text: "加载时间对比(毫秒)"
-      //  },
-      //  data: datas
-      //});
-      //chart.render();
-    },
-    renderPie: function () {
       var datas = [], chart;
       this.hars.forEach(function (data) {
         datas.push({
@@ -75,7 +47,7 @@
 
       var chart = new CanvasJS.Chart("chart-column", {
         title: {
-          text: "横向数据对比"
+          text: "横向数据对比(单位:字节,毫秒)"
         },
         axisX: {
           title: "对比项目"
