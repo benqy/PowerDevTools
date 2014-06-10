@@ -32,6 +32,17 @@
                 display: block;
             }
 
+        .chart-pie-wrap{
+            margin-top:150px;
+        }
+
+        .chart-pie{
+            float:left;
+            width:400px;
+            height:300px;
+            margin:10px 30px;
+        }
+        
         .report {
             padding: 0;
             margin: 0 0 40px 0;
@@ -106,9 +117,12 @@ http://www.baidu.com
             <li>文件总大小(KB)</li>
         </ul>
     </div>
-    <div class="content" id="report-chart" style="clear: left;">
+    <div class="content" id="report-chart" style="clear: left;width:100%;height:300px;">
         <h4>测试报告(图形)</h4>
         <div id="chart-column"></div>
+        
+    </div>
+    <div class="chart-pie-wrap" id="chart-pie-wrap" style="clear:left;width:100%">
     </div>
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/canvasjs.min.js"></script>

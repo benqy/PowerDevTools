@@ -104,7 +104,6 @@
         if (!loadend) {
           loadend = true;
           transferTime = Date.now() - transferTime - checkTime;
-          console.log(transferTime);
           chrome.devtools.network.getHAR(function (harObj) {
             var harParser = new HARParser(harObj);
             //计算实际总传输时间(即开始请求页面到最后一个请求结束)
