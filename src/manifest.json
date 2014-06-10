@@ -9,7 +9,7 @@
     }
   ],
   "permissions": [
-    "tabs","experimental",  "http://*/*", "https://*/*"
+    "tabs",  "http://*/*", "https://*/*"
   ],
   "devtools_page": "devtools.html",
   "background": { "scripts": ["js/background.js"] },
