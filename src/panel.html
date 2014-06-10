@@ -17,18 +17,20 @@
 
         textarea {
             width: 400px;
-            float:left;
+            float: left;
         }
 
-        #log{
-            float:left;
-            margin:0 15px;
-            padding:3px;
-            height:155px;
+        #log {
+            float: left;
+            margin: 0 15px;
+            padding: 3px;
+            height: 155px;
         }
-        #log span{
-            display:block;
-        }
+
+            #log span {
+                display: block;
+            }
+
         .report {
             padding: 0;
             margin: 0 0 40px 0;
@@ -70,14 +72,16 @@
 </head>
 <body>
     <div class="content" style="border-bottom: 1px solid #ddd;">
-        <h4>网站首屏速度(多个站点请换行)</h4>
+        <h4>加载速度测试(多个站点请换行)</h4>
         <div>
-        <textarea name="" id="urls" cols="300" rows="10">
+            <p>重复测试<input type="number" min="1" max="10" name="" id="repeatTimes" value="1" style="width:50px;">次。
+        去掉最高最低值各<input type="number" min="0" max="2" name="" id="reduceOver" value="0" style="width:50px;">个</p>
+<textarea name="" id="urls" cols="300" rows="10">
 http://www.baidu.com
-       </textarea>
+</textarea>
             <div id="log"></div>
         </div>
-        <div style="clear:left;">
+        <div style="clear: left;">
             <button id="startTesting">GO</button>
         </div>
     </div>
@@ -87,7 +91,7 @@ http://www.baidu.com
             <li>状态/网站</li>
             <li>请求数</li>
             <li>DomContentLoaded(秒)</li>
-            <li>Onload事件(秒)</li>
+            <li style="font: red;">Onload事件(秒)</li>
             <li>Blocked(秒)</li>
             <li>DNS(秒)</li>
             <li>Connect(秒)</li>
@@ -96,11 +100,11 @@ http://www.baidu.com
             <li>Receive(秒)</li>
             <li>SSL(秒)</li>
             <li>加载总用时(秒)</li>
-            <li>传输大小(KB)</li>
+            <li style="font: red;">传输大小(KB)</li>
             <li>文件总大小(KB)</li>
         </ul>
     </div>
-    <div class="content" id="report-chart" style="clear:left;">
+    <div class="content" id="report-chart" style="clear: left;">
         <h4>测试报告(图形)</h4>
         <div id="chart-column"></div>
     </div>

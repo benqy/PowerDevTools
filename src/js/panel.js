@@ -52,6 +52,8 @@
     reset: function () {
       this.datas = [];
       this.urls = [];
+      this.repeatTimes = 1;
+      this.reduceOver = 0;
       $('.report-content').remove();
       $('#chart-column').text('');
     },
@@ -64,6 +66,14 @@
       chrome.devtools.network.onRequestFinished.addListener(this.onRequestFinished);
       chrome.devtools.network.onNavigated.addListener(this.onNavigated);
       this.urls = $.trim($('#urls').val()).split("\n");
+      this.repeatTimes = $('#repeatTimes').val();
+      this.reduceOver = $('#reduceOver').val();
+      //根据重复测试次数,重组urls
+      var tempUrls = [];
+      for (var i = 0; i < this.repeatTimes; i++) {
+        tempUrls = tempUrls.concat(this.urls);
+      }
+      this.urls = tempUrls;
       this.next();
     },
     onRequestFinished: function () {
@@ -94,6 +104,7 @@
         if (!loadend) {
           loadend = true;
           transferTime = Date.now() - transferTime - checkTime;
+          console.log(transferTime);
           chrome.devtools.network.getHAR(function (harObj) {
             var harParser = new HARParser(harObj);
             //计算实际总传输时间(即开始请求页面到最后一个请求结束)
@@ -112,7 +123,7 @@
       log(this.datas);
       logToPanel('Finished,see the report below');
       log('Finished');
-      new Reporter(this.datas).render();      
+      new Reporter(this.datas, { reduceOver: this.reduceOver }).render();
     }
   };
 
