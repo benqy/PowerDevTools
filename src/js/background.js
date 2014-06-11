@@ -17,7 +17,11 @@ var messageCenter = {
   },
   log: function (params, sender, sendResponse) {
     console.log(params);
-  }
+  },
+  //reload_page: function (params, sender, sendResponse) {
+  //  console.log('reload');
+  //  chrome.tabs.reload();
+  //}
 };
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {

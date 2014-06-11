@@ -8,6 +8,8 @@
     }
   };
 
+
+
   global.log = function (obj) {
     send('log', obj);
   };
@@ -36,11 +38,19 @@
   var checkTime = 5000;
 
 
-
   var speedTesting = {
     datas: [],
     init: function () {
       this.urls = [];
+
+      //读取上次保存的配置
+      var lastUrls = localStorage.getItem('urls');
+      var lastRepeatTimes = localStorage.getItem('repeatTimes')||1;
+      var lastReduceOver = localStorage.getItem('reduceOver')||0;
+      $('#urls').val(lastUrls);
+      $('#repeatTimes').val(lastRepeatTimes);
+      $('#reduceOver').val(lastReduceOver);
+
       this.bindAction();
       this.getQuestFormServer();
     },
@@ -74,6 +84,11 @@
               me.urls = params.sites;
               me.repeatTimes = params.repeatTimes;
               me.reduceOver = params.reduceOver;
+              
+              $('#urls').val(me.urls.join('\n'));
+              $('#repeatTimes').val(me.repeatTimes);
+              $('#reduceOver').val(me.reduceOver);
+
               me.start();
             }
             else {
@@ -89,18 +104,24 @@
     //发送测试结果到服务器
     postReportToServer: function (arrangeDatas) {
       var me = this;
-      console.log('postData', arrangeDatas);
       $.post('http://127.0.0.1:9001/savepageloaddata', {
         reporter: arrangeDatas
       }, function (data) {
         me.getQuestFormServer();
       });
     },
+    saveConfigs: function () {
+      localStorage.setItem('urls', this.urls.join('\n'));
+      localStorage.setItem('repeatTimes', this.repeatTimes);
+      localStorage.setItem('reduceOver', this.reduceOver);
+    },
     start: function () {
       clearLog();
       this.reset();
       logToPanel('begin testing');
       log('Start');
+      this.saveConfigs();
+
       this.stop();
       chrome.devtools.network.onRequestFinished.addListener(this.onRequestFinished);
       chrome.devtools.network.onNavigated.addListener(this.onNavigated);
