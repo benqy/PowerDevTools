@@ -13,10 +13,10 @@
   };
 
   global.logToPanel = function (text) {
-    $('#log').append('<span>[' + new Date().toString()   + ']:' + text+'</span>');
+    $('#log').append('<span>[' + new Date().toString() + ']:' + text + '</span>');
   };
 
-  global.clearLog = function(){
+  global.clearLog = function () {
     $('#log').html('');
   };
   //毫秒转为秒显示,并保留3位小数
@@ -38,7 +38,7 @@
 
 
   var speedTesting = {
-    datas:[],
+    datas: [],
     init: function () {
       this.urls = [];
       this.bindAction();
@@ -48,34 +48,45 @@
       var me = this;
       $('#startTesting').on('click', function () {
         me.urls = $.trim($('#urls').val()).split("\n");
+        me.repeatTimes = $('#repeatTimes').val();
+        me.reduceOver = $('#reduceOver').val();
         speedTesting.start();
       });
     },
     reset: function () {
       this.datas = [];
-      this.repeatTimes = 1;
-      this.reduceOver = 0;
+      //this.repeatTimes = 1;
+      //this.reduceOver = 0;
       $('.report-content').remove();
       $('#chart-column').text('');
       $('#chart-pie-wrap').text('');
     },
-    getQuestTimer:null,
+    getQuestTimer: null,
+    //从服务端请求测试参数
     getQuestFormServer: function () {
       var me = this;
-      this.getQuestTimer =  setTimeout(function () {
-        $.get('http://127.0.0.1:9001/siteForPageLoad', function (params) {
-          if (params.sites) {
-            me.urls = params.sites;
-            me.repeatTimes = params.repeatTimes;
-            me.reduceOver = params.reduceOver;
-            me.start();
-          }
-          else {            
+      this.getQuestTimer = setTimeout(function () {
+        $.ajax({
+          url: 'http://127.0.0.1:9001/siteForPageLoad',
+          cache: false,
+          success: function (params) {
+            if (params.sites) {
+              me.urls = params.sites;
+              me.repeatTimes = params.repeatTimes;
+              me.reduceOver = params.reduceOver;
+              me.start();
+            }
+            else {
+              me.getQuestFormServer();
+            }
+          },
+          error: function () {
             me.getQuestFormServer();
           }
         });
       }, 1000);
     },
+    //发送测试结果到服务器
     postReportToServer: function (arrangeDatas) {
       var me = this;
       console.log('postData', arrangeDatas);
@@ -92,15 +103,13 @@
       log('Start');
       this.stop();
       chrome.devtools.network.onRequestFinished.addListener(this.onRequestFinished);
-      chrome.devtools.network.onNavigated.addListener(this.onNavigated);      
-      this.repeatTimes = $('#repeatTimes').val();
-      this.reduceOver = $('#reduceOver').val();
+      chrome.devtools.network.onNavigated.addListener(this.onNavigated);
       //根据重复测试次数,重组urls
       var tempUrls = [];
       for (var i = 0; i < this.repeatTimes; i++) {
         tempUrls = tempUrls.concat(this.urls);
       }
-      
+
       this.urls = tempUrls;
       this.next();
     },
@@ -136,7 +145,7 @@
             var harParser = new HARParser(harObj);
             //计算实际总传输时间(即开始请求页面到最后一个请求结束)
             harParser.timings.transferTime = msToSec(transferTime);
-            me.datas.push(harParser);            
+            me.datas.push(harParser);
             me.next();
           });
         }
