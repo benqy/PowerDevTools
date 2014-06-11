@@ -138,7 +138,7 @@ http://www.duowan.com
           indexLabelFontColor: "darkgrey",
           indexLabelLineColor: "darkgrey",
           indexLabelPlacement: "outside",
-          type: "pie",
+          type: "doughnut",
           showInLegend: true,
           dataPoints: points
         }]
