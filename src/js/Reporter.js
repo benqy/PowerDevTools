@@ -16,7 +16,6 @@ http://www.duowan.com
     //reduceOver
     this.originalHarParsers = harParsers;
     this.arrangeDatas = [];
-    ;
   };
 
   global.Reporter.prototype = {

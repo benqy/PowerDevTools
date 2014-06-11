@@ -13,7 +13,7 @@
   };
 
   global.logToPanel = function (text) {
-    $('#log').append('<span>[' + new Date().toString()   + ']:' +text+'</span>');
+    $('#log').append('<span>[' + new Date().toString()   + ']:' + text+'</span>');
   };
 
   global.clearLog = function(){
@@ -37,25 +37,53 @@
 
 
 
-
   var speedTesting = {
     datas:[],
     init: function () {
       this.urls = [];
       this.bindAction();
+      this.getQuestFormServer();
     },
     bindAction: function () {
+      var me = this;
       $('#startTesting').on('click', function () {
+        me.urls = $.trim($('#urls').val()).split("\n");
         speedTesting.start();
       });
     },
     reset: function () {
       this.datas = [];
-      this.urls = [];
       this.repeatTimes = 1;
       this.reduceOver = 0;
       $('.report-content').remove();
       $('#chart-column').text('');
+      $('#chart-pie-wrap').text('');
+    },
+    getQuestTimer:null,
+    getQuestFormServer: function () {
+      var me = this;
+      this.getQuestTimer =  setTimeout(function () {
+        $.get('http://127.0.0.1:9001/siteForPageLoad', function (params) {
+          if (params.sites) {
+            me.urls = params.sites;
+            me.repeatTimes = params.repeatTimes;
+            me.reduceOver = params.reduceOver;
+            me.start();
+          }
+          else {            
+            me.getQuestFormServer();
+          }
+        });
+      }, 1000);
+    },
+    postReportToServer: function (arrangeDatas) {
+      var me = this;
+      console.log('postData', arrangeDatas);
+      $.post('http://127.0.0.1:9001/savepageloaddata', {
+        reporter: arrangeDatas
+      }, function (data) {
+        me.getQuestFormServer();
+      });
     },
     start: function () {
       clearLog();
@@ -64,8 +92,7 @@
       log('Start');
       this.stop();
       chrome.devtools.network.onRequestFinished.addListener(this.onRequestFinished);
-      chrome.devtools.network.onNavigated.addListener(this.onNavigated);
-      this.urls = $.trim($('#urls').val()).split("\n");
+      chrome.devtools.network.onNavigated.addListener(this.onNavigated);      
       this.repeatTimes = $('#repeatTimes').val();
       this.reduceOver = $('#reduceOver').val();
       //根据重复测试次数,重组urls
@@ -73,6 +100,7 @@
       for (var i = 0; i < this.repeatTimes; i++) {
         tempUrls = tempUrls.concat(this.urls);
       }
+      
       this.urls = tempUrls;
       this.next();
     },
@@ -122,7 +150,9 @@
       log(this.datas);
       logToPanel('Finished,see the report below');
       log('Finished');
-      new Reporter(this.datas, { reduceOver: this.reduceOver }).render();
+      var reporter = new Reporter(this.datas, { reduceOver: this.reduceOver })
+      reporter.render();
+      this.postReportToServer(reporter.arrangeDatas);
     }
   };
 
