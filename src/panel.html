@@ -15,34 +15,47 @@
             padding-bottom: 15px;
         }
 
+        .quest-wrap{
+           border: 1px solid #ddd;
+           padding-left:20px;
+           margin-bottom:20px;
+        }
+
+        .quest-wrap input[type="text"]{
+            width:338px;
+        }
+
         textarea {
-            width: 400px;
+            width: 545px;
             float: left;
+            border:1px solid #ddd;
         }
 
         #log {
             float: left;
             margin: 0 15px;
             padding: 3px;
-            height: 155px;
-            overflow:auto;
+            height:100%;
+            width:55%;
+            max-height: 347px;
+            overflow: auto;
         }
 
             #log span {
                 display: block;
             }
 
-        .chart-pie-wrap{
-            margin-top:150px;
+        .chart-pie-wrap {
+            margin-top: 150px;
         }
 
-        .chart-pie{
-            float:left;
-            width:400px;
-            height:300px;
-            margin:10px 30px;
+        .chart-pie {
+            float: left;
+            width: 400px;
+            height: 300px;
+            margin: 10px 30px;
         }
-        
+
         .report {
             padding: 0;
             margin: 0 0 40px 0;
@@ -85,13 +98,26 @@
 <body>
     <div class="content" style="border-bottom: 1px solid #ddd;">
         <h4>加载速度测试(多个站点请换行)</h4>
-        <div>
-            <p>重复测试<input type="number" min="1" max="10" name="" id="repeatTimes" value="1" style="width:50px;">次。
-        去掉最高最低值各<input type="number" min="0" max="2" name="" id="reduceOver" value="0" style="width:50px;">个</p>
-<textarea name="" id="urls" cols="300" rows="10">
-</textarea>
-            <div id="log">
+        <div style="width: 40%;float:left;">
+            <div class="quest-wrap">
+                <p style="font-weight:bold;">自动加载服务端测试任务(每秒请求1次):
+                    <input type="checkbox" name="" checked="checked" id="toggleTestQuest">
+                </p>
+                <p>加载测试任务接口地址:
+                    <input type="text" name="" value="http://127.0.0.1:9001/siteForPageLoad" id="testQuestConfigUrl"></p>
+                <p>提交测试结果接口地址:
+                    <input type="text" name="" value="http://127.0.0.1:9001/savepageloaddata" id="testQuestReportUrl"></p>
             </div>
+
+            <p style="border: 1px solid #ddd;padding: 10px 20px;">
+                重复测试：<input type="number" min="1" max="10" name="" id="repeatTimes" value="1" style="width: 50px;">次。
+        去掉最高最低值各：<input type="number" min="0" max="2" name="" id="reduceOver" value="0" style="width: 50px;">个
+            </p>
+            <textarea name="" id="urls" cols="300" rows="10">
+            </textarea>
+        </div>
+        <div id="log">
+
         </div>
         <div style="clear: left;">
             <button id="startTesting">GO</button>
@@ -103,7 +129,7 @@
             <li>状态/网站</li>
             <li>请求数</li>
             <li>DomContentLoaded(秒)</li>
-            <li style="font: red;">Onload事件(秒)</li>
+            <li style="color: red;">Onload事件(秒)</li>
             <li>Blocked(秒)</li>
             <li>DNS(秒)</li>
             <li>Connect(秒)</li>
@@ -112,16 +138,16 @@
             <li>Receive(秒)</li>
             <li>SSL(秒)</li>
             <li>加载总用时(秒)</li>
-            <li style="font: red;">传输大小(KB)</li>
+            <li style="color: red;">传输大小(KB)</li>
             <li>文件总大小(KB)</li>
         </ul>
     </div>
-    <div class="content" id="report-chart" style="clear: left;width:100%;height:300px;">
+    <div class="content" id="report-chart" style="clear: left; width: 100%; height: 300px;">
         <h4>测试报告(图形)</h4>
         <div id="chart-column"></div>
-        
+
     </div>
-    <div class="chart-pie-wrap" id="chart-pie-wrap" style="clear:left;width:100%">
+    <div class="chart-pie-wrap" id="chart-pie-wrap" style="clear: left; width: 100%">
     </div>
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/canvasjs.min.js"></script>

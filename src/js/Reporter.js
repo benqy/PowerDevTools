@@ -151,7 +151,7 @@ http://www.duowan.com
       ul += '<li>' + data.site + '</li>';
       ul += '<li>' + (data.avgData.requestCount * 1).toFixed(0) + '</li>';
       ul += '<li>' + data.avgData.onContentLoad + '</li>';
-      ul += '<li>' + data.avgData.onLoad + '</li>';
+      ul += '<li style="color:red;">' + data.avgData.onLoad + '</li>';
       ul += '<li>' + data.avgData.blocked + '</li>';
       ul += '<li>' + data.avgData.dns + '</li>';
       ul += '<li>' + data.avgData.connect + '</li>';
@@ -160,7 +160,7 @@ http://www.duowan.com
       ul += '<li>' + data.avgData.receive + '</li>';
       ul += '<li>' + data.avgData.ssl + '</li>';
       ul += '<li>' + data.avgData.transferTime + '</li>';
-      ul += '<li>' + data.avgData.transfer + '</li>';
+      ul += '<li style="color:red;">' + data.avgData.transfer + '</li>';
       ul += '<li>' + data.avgData.content + '</li>';
       ul += '</ul>';
       $('#report').append(ul);

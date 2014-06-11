@@ -45,14 +45,18 @@
 
       //读取上次保存的配置
       var lastUrls = localStorage.getItem('urls');
-      var lastRepeatTimes = localStorage.getItem('repeatTimes')||1;
-      var lastReduceOver = localStorage.getItem('reduceOver')||0;
+      var lastRepeatTimes = localStorage.getItem('repeatTimes') || 1;
+      var lastReduceOver = localStorage.getItem('reduceOver') || 0;
       $('#urls').val(lastUrls);
       $('#repeatTimes').val(lastRepeatTimes);
       $('#reduceOver').val(lastReduceOver);
 
       this.bindAction();
-      this.getQuestFormServer();
+      if ($('#toggleTestQuest')[0].checked) {
+        this.testQuestConfigUrl = $('#testQuestConfigUrl').val();
+        this.testQuestReportUrl = $('#testQuestReportUrl').val();
+        this.getQuestFormServer();
+      }
     },
     bindAction: function () {
       var me = this;
@@ -61,6 +65,17 @@
         me.repeatTimes = $('#repeatTimes').val();
         me.reduceOver = $('#reduceOver').val();
         speedTesting.start();
+      });
+
+      $('#toggleTestQuest').on('click', function () {
+        if (this.checked) {
+          me.testQuestConfigUrl = $('#testQuestConfigUrl').val();
+          me.testQuestReportUrl = $('#testQuestReportUrl').val();
+          me.getQuestFormServer();
+        }
+        else {
+          clearTimeout(me.getQuestTimer);
+        }
       });
     },
     reset: function () {
@@ -76,35 +91,38 @@
     getQuestFormServer: function () {
       var me = this;
       this.getQuestTimer = setTimeout(function () {
-        $.ajax({
-          url: 'http://127.0.0.1:9001/siteForPageLoad',
-          cache: false,
-          success: function (params) {
-            if (params.sites) {
-              me.urls = params.sites;
-              me.repeatTimes = params.repeatTimes;
-              me.reduceOver = params.reduceOver;
-              
-              $('#urls').val(me.urls.join('\n'));
-              $('#repeatTimes').val(me.repeatTimes);
-              $('#reduceOver').val(me.reduceOver);
+        if (me.testQuestConfigUrl && $('#toggleTestQuest')[0].checked) {
+          $.ajax({
+            url: me.testQuestConfigUrl,
+            cache: false,
+            success: function (params) {
+              if (params.sites) {
+                me.urls = params.sites;
+                me.repeatTimes = params.repeatTimes;
+                me.reduceOver = params.reduceOver;
 
-              me.start();
-            }
-            else {
+                $('#urls').val(me.urls.join('\n'));
+                $('#repeatTimes').val(me.repeatTimes);
+                $('#reduceOver').val(me.reduceOver);
+
+                me.start();
+              }
+              else {
+                me.getQuestFormServer();
+              }
+            },
+            error: function () {
               me.getQuestFormServer();
             }
-          },
-          error: function () {
-            me.getQuestFormServer();
-          }
-        });
+          });
+        }
       }, 1000);
     },
     //发送测试结果到服务器
     postReportToServer: function (arrangeDatas) {
       var me = this;
-      $.post('http://127.0.0.1:9001/savepageloaddata', {
+      if (!me.testQuestReportUrl || !$('#toggleTestQuest')[0].checked) return;
+      $.post(me.testQuestReportUrl, {
         reporter: arrangeDatas
       }, function (data) {
         me.getQuestFormServer();
