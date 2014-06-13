@@ -27,6 +27,7 @@ http://www.duowan.com
         me.renderReport(data);
         me.renderPie(data);
       });
+      this.exportJson();
     },
     arrangeHarParsers: function () {
       //先按网址分组
@@ -164,6 +165,9 @@ http://www.duowan.com
       ul += '<li>' + data.avgData.content + '</li>';
       ul += '</ul>';
       $('#report').append(ul);
+    },
+    exportJson: function () {
+      $('#export-json').val(JSON.stringify(this.arrangeDatas));
     }
   };
 })(this);
